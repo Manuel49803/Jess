@@ -1,0 +1,1347 @@
+<!DOCTYPE html><html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Para Jess ❤️</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,.35), transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(120,70,40,.12), transparent 30%),
+                #d8c3a5;
+            font-family: "Cormorant Garamond", serif;
+            color: #49352d;
+            overflow-x: hidden;
+        }
+
+        /* Textura vintage */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .18;
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(80,50,30,.05) 0px,
+                    rgba(80,50,30,.05) 1px,
+                    transparent 1px,
+                    transparent 4px
+                );
+            z-index: 20;
+        }
+
+        .album-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 35px 15px;
+        }
+
+        .album {
+            position: relative;
+            width: min(1000px, 95vw);
+            height: min(650px, 82vh);
+            min-height: 500px;
+            perspective: 2500px;
+        }
+
+        /* =========================
+           PÁGINAS
+        ========================= */
+
+        .page {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            right: 0;
+            top: 0;
+            transform-origin: left center;
+            transform-style: preserve-3d;
+            transition: transform 1s cubic-bezier(.65,.05,.36,1);
+            /* El JavaScript coloca la hoja actual por encima de las demás. */
+            z-index: 1;
+        }
+
+        .page.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        .page-side {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            background:
+                radial-gradient(circle at 10% 10%, rgba(255,255,255,.8), transparent 25%),
+                #f4e7d0;
+            border: 1px solid #c5aa87;
+            box-shadow:
+                inset 0 0 35px rgba(100,60,30,.12),
+                0 8px 25px rgba(60,35,20,.2);
+            overflow: hidden;
+        }
+
+        .page-back {
+            transform: rotateY(180deg);
+        }
+
+        .page-side::after {
+            content: "";
+            position: absolute;
+            inset: 12px;
+            border: 1px solid rgba(115,75,48,.25);
+            pointer-events: none;
+        }
+
+        /* =========================
+           PORTADA
+        ========================= */
+
+        .cover {
+            position: absolute;
+            inset: 0;
+            width: 50%;
+            height: 100%;
+            background:
+                linear-gradient(135deg, #673f32, #8a5d4b 50%, #59372d);
+            border-radius: 5px 0 0 5px;
+            box-shadow:
+                0 15px 40px rgba(50,25,15,.4),
+                inset 0 0 40px rgba(0,0,0,.25);
+            color: #f5dfbd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 100;
+            transform-origin: left center;
+            transition: transform 1s cubic-bezier(.65,.05,.36,1);
+            overflow: hidden;
+        }
+
+        .cover.open {
+            transform: rotateY(-180deg);
+            pointer-events: none;
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 2;
+            padding: 30px;
+        }
+
+        .cover::before {
+            content: "";
+            position: absolute;
+            inset: 18px;
+            border: 2px solid rgba(238,207,160,.65);
+            border-radius: 3px;
+        }
+
+        .cover::after {
+            content: "❦";
+            position: absolute;
+            font-size: 220px;
+            color: rgba(238,207,160,.06);
+            transform: rotate(-15deg);
+        }
+
+        .small-title {
+            font-size: 17px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .cover h1 {
+            font-family: "Great Vibes", cursive;
+            font-size: clamp(65px, 10vw, 105px);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .cover-date {
+            font-size: 21px;
+            letter-spacing: 4px;
+        }
+
+        .open-button {
+            margin-top: 45px;
+            padding: 12px 30px;
+            border: 1px solid #e8cfa9;
+            background: transparent;
+            color: #f5dfbd;
+            font-family: inherit;
+            font-size: 17px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .open-button:hover {
+            background: #e8cfa9;
+            color: #5b392e;
+        }
+
+        /* =========================
+           CONTENIDO
+        ========================= */
+
+        .page-content {
+            position: relative;
+            height: 100%;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 22px;
+            right: 30px;
+            font-size: 14px;
+            color: #96765c;
+            letter-spacing: 2px;
+        }
+
+        .ornament {
+            font-size: 30px;
+            color: #9a604d;
+            margin-bottom: 10px;
+        }
+
+        .page-title {
+            font-family: "Great Vibes", cursive;
+            font-size: 43px;
+            font-weight: 400;
+            color: #744838;
+            margin-bottom: 18px;
+        }
+
+        .message {
+            max-width: 400px;
+            font-size: 20px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        /* =========================
+           FOTOS
+        ========================= */
+
+        .photo-grid {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .photo-frame {
+            background: #fdf7eb;
+            padding: 10px 10px 35px;
+            box-shadow: 0 7px 15px rgba(60,35,20,.25);
+            transform: rotate(-2deg);
+            transition: .4s;
+        }
+
+        .photo-frame:nth-child(2) {
+            transform: rotate(2deg);
+        }
+
+        .photo-frame:hover {
+            transform: rotate(0deg) scale(1.03);
+            z-index: 5;
+        }
+
+        .photo-frame img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            filter: sepia(.25) saturate(.85) contrast(.95);
+        }
+
+        .photo-caption {
+            margin-top: 10px;
+            font-size: 17px;
+            font-style: italic;
+        }
+
+        /* =========================
+           NAVEGACIÓN
+        ========================= */
+
+        .controls {
+            position: absolute;
+            bottom: -65px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 200;
+        }
+
+        .control-button {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid #76513f;
+            background: rgba(244,231,208,.85);
+            color: #654336;
+            font-size: 20px;
+            cursor: pointer;
+            transition: .3s;
+        }
+
+        .control-button:hover {
+            background: #76513f;
+            color: white;
+            transform: scale(1.08);
+        }
+
+        .counter {
+            min-width: 90px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        /* =========================
+           DECORACIÓN
+        ========================= */
+
+        .flower {
+            position: absolute;
+            color: #9b624f;
+            opacity: .45;
+            font-size: 40px;
+        }
+
+        .flower.top {
+            top: 25px;
+            left: 30px;
+        }
+
+        .flower.bottom {
+            bottom: 25px;
+            left: 30px;
+            transform: rotate(180deg);
+        }
+
+
+        /* =========================
+           SNOOPY
+        ========================= */
+
+        .snoopy-cover {
+            position: absolute;
+            width: 210px;
+            right: -78px;
+            bottom: -18px;
+            z-index: 3;
+            pointer-events: none;
+            filter: drop-shadow(0 8px 5px rgba(0,0,0,.22));
+            animation: snoopyFloat 4s ease-in-out infinite;
+        }
+
+        .snoopy {
+            position: absolute;
+            width: 135px;
+            right: -12px;
+            bottom: -8px;
+            z-index: 10;
+            pointer-events: none;
+            opacity: .95;
+            filter: drop-shadow(0 5px 4px rgba(50,30,20,.15));
+            animation: snoopyFloat 5s ease-in-out infinite;
+        }
+
+        .snoopy.left {
+            left: -18px;
+            right: auto;
+            transform: scaleX(-1);
+        }
+
+        @keyframes snoopyFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(2deg);
+            }
+            50% {
+                transform: translateY(-8px) rotate(-2deg);
+            }
+        }
+
+        /* =========================
+           CORAZONES FLOTANTES
+        ========================= */
+
+        .heart {
+            position: fixed;
+            bottom: -35px;
+            left: 0;
+            color: #a96757;
+            font-size: 18px;
+            opacity: .42;
+            z-index: 2;
+            pointer-events: none;
+            animation: heartUp linear forwards;
+            text-shadow: 0 2px 5px rgba(80,40,25,.12);
+        }
+
+        @keyframes heartUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: .42;
+            }
+
+            100% {
+                transform: translateY(-110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .album {
+                height: 620px;
+                min-height: 0;
+            }
+
+            .cover {
+                width: 100%;
+                border-radius: 5px;
+            }
+
+            .page {
+                width: 100%;
+            }
+
+            .page-content {
+                padding: 30px 25px;
+            }
+
+            .photo-grid {
+                gap: 10px;
+            }
+
+            .photo-frame {
+                padding: 7px 7px 25px;
+            }
+
+            .photo-caption {
+                font-size: 14px;
+            }
+
+            .message {
+                font-size: 18px;
+            }
+
+            .controls {
+                bottom: -65px;
+            }
+        }
+
+        @media (max-width: 430px) {
+
+            .album {
+                height: 570px;
+            }
+
+            .cover h1 {
+                font-size: 70px;
+            }
+
+            .snoopy-cover {
+                width: 135px;
+                right: -15px;
+                bottom: -5px;
+            }
+
+            .snoopy {
+                width: 105px;
+                right: -8px;
+            }
+
+            .page-title {
+                font-size: 36px;
+            }
+
+            .photo-grid {
+                grid-template-columns: 1fr;
+                max-width: 240px;
+            }
+
+            .photo-frame:nth-child(2) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="album-container">
+
+    <div class="album" id="album">
+
+        <!-- =========================
+             PORTADA
+        ========================== -->
+
+        <div class="cover" id="cover">
+
+            <div class="cover-content">
+
+                <div class="small-title">
+                    NUESTROS RECUERDOS ETERNOS
+                </div>
+
+                <h1>Familia Marinela 😻</h1>
+
+                <div class="cover-date">
+                    30 · 08 · 2025
+                </div>
+
+                <button class="open-button" onclick="openAlbum()">
+                    Abrir nuestro álbum ♡
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             PÁGINA 1
+        ========================== -->
+
+        <div class="page" id="page1">
+
+            <div class="page-side">
+
+                <div class="page-content">
+
+                    <div class="flower top">❧</div>
+
+                    <div class="ornament">❦</div>
+
+                    <div class="page-title">
+                        Para mi Jess
+                    </div>
+
+                    <p class="message">
+                       Nuestro primer año juntitos ha sido el mejor que he tenido en mi vida entera y te lo debo a ti, mi domita bimbo.
+                    </p>
+
+                    <div class="ornament">♡</div>
+
+                    <img
+                        src="fotos\snoopy_PNG98.png"
+                        
+                        class="snoopy"
+                        alt="Snoopy">
+
+                    <span class="page-number">01</span>
+
+                </div>
+
+            </div>
+
+            <div class="page-side page-back">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        El inicio de nuestra historia
+                    </div>
+
+                    <div class="photo-grid">
+
+                        <div class="photo-frame">
+                            <img src="fotos\IMG_20250809_163941.jpg" alt="Nuestro recuerdo">
+                            <div class="photo-caption">
+                               El mejor dia 💖
+                            </div>
+                        </div>
+
+                        <div class="photo-frame">
+                            <img src="fotos\IMG_20250906_140103.jpg" alt="Nuestro recuerdo">
+                            <div class="photo-caption">
+                                Nuestra simi-cita 👴
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="page-number">02</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             PÁGINA 2
+        ========================== -->
+
+        <div class="page" id="page2">
+
+            <div class="page-side">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        Nuestras primeras citas
+                    </div>
+
+                    <div class="photo-grid">
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20250925_162812.jpg" alt="">
+                            <div class="photo-caption">
+                                Pura Ciencia 🤓
+                            </div>
+                        </div>
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20251004_180314.jpg" alt="">
+                            <div class="photo-caption">
+                                Nuestra primera salida recreativa 💞
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="page-number">03</span>
+
+                </div>
+
+            </div>
+
+            <div class="page-side page-back">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        Sakidas tranqui 
+                    </div>
+
+                    <div class="photo-grid">
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20251122_212248_025.jpg" alt="">
+                            <div class="photo-caption">
+                                Nuestro dia de alameda 🍪
+                            </div>
+                        </div>
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20250912_160655.jpg" alt="">
+                            <div class="photo-caption">
+                                Comida tradicional panista 
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="page-number">04</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             PÁGINA 3
+        ========================== -->
+
+        <div class="page" id="page3">
+
+            <div class="page-side">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        Nuestra primera Navidad 
+                    </div>
+
+                    <div class="photo-grid">
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20251206_175657.jpg" alt="">
+                            <div class="photo-caption">
+                            Fotito con arbol 🎄
+                            </div>
+                        </div>
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20251226_170151.jpg" alt="">
+                            <div class="photo-caption">
+                               Tu regalo de Navidad 🎁
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="page-number">05</span>
+
+                </div>
+
+            </div>
+
+            <div class="page-side page-back">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        Salidas culinarias 👨‍🍳 
+                    </div>
+
+                    <p class="message">
+                        De nustras salidas siempre me encata bustros momentes gastronomicos, aunque siempre te quiera comer mas a ti 😽
+                    </p>
+
+                    <div class="ornament">❦</div>
+
+                    <img
+                        src="fotos/snoopy-amor.png"
+                        class="snoopy left"
+                        alt="Snoopy">
+
+                    <span class="page-number">06</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             PÁGINA 4
+        ========================== -->
+
+        <div class="page" id="page4">
+
+            <div class="page-side">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        Comiditas
+                    </div>
+
+                    <div class="photo-grid">
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20251023_175500.jpg" alt="">
+                            <div class="photo-caption">
+                               Un sichito🍣
+                            </div>
+                        </div>
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20260411_153417.jpg" alt="">
+                            <div class="photo-caption">
+                               Samborns God ☕
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="page-number">07</span>
+
+                </div>
+
+            </div>
+
+            <div class="page-side page-back">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                       Dias cinefilos 🚬
+                    </div>
+
+                    <div class="photo-grid">
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20260228_150419.jpg" alt="">
+                            <div class="photo-caption">
+                                Cinetecos 🎞️
+                            </div>
+                        </div>
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20260411_184551.jpg" alt="">
+                            <div class="photo-caption">
+                                Hoppers 🦫💘
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="page-number">08</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             PÁGINA 5
+        ========================== -->
+
+        <div class="page" id="page5">
+
+            <div class="page-side">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        De mis fotos favoritas
+                    </div>
+
+                    <div class="photo-grid">
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20260419_190449.jpg" alt="">
+                            <div class="photo-caption">
+                                Tu sonrisa y bellesa inigualable 🛐
+                            </div>
+                        </div>
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20260530_174007.jpg" alt="">
+                            <div class="photo-caption">
+                                Algun dia sera realidad 💍
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="page-number">09</span>
+
+                </div>
+
+            </div>
+
+            <div class="page-side page-back">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        Nuestros Hijos 
+                    </div>
+
+                    <p class="message">
+                        Nuestros acompñante sde nuestra frutura casa y que siempre cuidaremos. Viva Rambo, rambito y Toribio.
+                    </p>
+
+                    <div class="ornament">♡</div>
+
+                    <img
+                        src="fotos/Snoopy-Christmas-Free-PNG-Image.png"
+                        class="snoopy"
+                        alt="Snoopy">
+
+                    <span class="page-number">10</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             PÁGINA 6
+        ========================== -->
+
+        <div class="page" id="page6">
+
+            <div class="page-side">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        Nuestra Familia 
+                    </div>
+
+                    <div class="photo-grid">
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20260214_215514_274.jpg" alt="">
+                            <div class="photo-caption">
+                                Rambitos
+                            </div>
+                        </div>
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20251226_225609_415.jpg" alt="">
+                            <div class="photo-caption">
+                                Toribio
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="page-number">11</span>
+
+                </div>
+
+            </div>
+
+            <div class="page-side page-back">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        Tu Familia 
+                    </div>
+
+                    <p class="message">
+                        No sabes como me gusta estar contigo y haber tenido este primer paso de conocer un pedacito mas de tu vida. Me ha encantado conocer a toda tu familia y ojala tener muchos mas momentos juntos.
+                    </p>
+
+                    <div class="ornament">❦</div>
+
+                    <img
+                        src="fotos/pngegg.png"
+                        class="snoopy left"
+                        alt="Snoopy">
+
+                    <span class="page-number">12</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             PÁGINA 7
+        ========================== -->
+
+        <div class="page" id="page7">
+
+            <div class="page-side">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        Familiares
+                    </div>
+
+                    <div class="photo-grid">
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20260721_180912.jpg" alt="">
+                            <div class="photo-caption">
+                                Toy Story 5 (muy mala) 🧸
+                            </div>
+                        </div>
+
+                        <div class="photo-frame">
+                            <img src="fotos/WhatsApp Image 2026-09-05 at 1.41.04 AM.jpeg" alt="">
+                            <div class="photo-caption">
+                               Cumple Yados 🎂
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="page-number">13</span>
+
+                </div>
+
+            </div>
+
+            <div class="page-side page-back">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                        Pero no termina aquí
+                    </div>
+
+                    <p class="message">
+                        Porque estas fotos son solo una pequeña
+                        parte de todos los recuerdos que todavía
+                        nos quedan por crear. Nuestra vida nos espera muchas aventuras que simpre quedaran aqui plasmadas en el tiempo.
+                    </p>
+
+                    <div class="ornament">♡</div>
+
+                    <img
+                        src="fotos/pngegg (1).png"
+                        class="snoopy"
+                        alt="Snoopy">
+
+                    <span class="page-number">14</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             PÁGINA 8
+        ========================== -->
+
+        <div class="page" id="page8">
+
+            <div class="page-side">
+
+                <div class="page-content">
+
+                    <div class="page-title">
+                       Nuestro aniversario
+                    </div>
+
+                    <div class="photo-grid">
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20260830_134106.jpg" alt="">
+                            <div class="photo-caption">
+                                Castillo 🏰
+                            </div>
+                        </div>
+
+                        <div class="photo-frame">
+                            <img src="fotos/IMG_20260830_151240.jpg" alt="">
+                            <div class="photo-caption">
+                                Changuitos 🙉
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <span class="page-number">15</span>
+
+                </div>
+
+            </div>
+
+            <div class="page-side page-back">
+
+                <div class="page-content">
+
+                    <div class="ornament">❦</div>
+
+                    <div class="page-title">
+                        Para mi futura esposa
+                    </div>
+
+                    <p class="message">
+                        Feliz aniversario mi pequeñita
+                        <br><br>
+                     Este album junto con el collarcito, son un regalito de mi corazon
+                     en el que siempre podremos ver como mi amor por ti nunca se acaba 
+                     y que siempre que tengas ese collar, puedas llevar una parte de mi contigo 💗
+                        <br><br>
+                        Te amo 
+                        <br>
+                        (Siempre mucho mas que tu)
+                    </p>
+
+                    <div class="ornament">♡</div>
+
+                    <span class="page-number">16</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CONTROLES -->
+
+    <div class="controls">
+
+        <button class="control-button" onclick="previousPage()" aria-label="Página anterior">
+            ←
+        </button>
+
+        <div class="counter" id="counter">
+            Portada
+        </div>
+
+        <button class="control-button" onclick="nextPage()" aria-label="Página siguiente">
+            →
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const pages = document.querySelectorAll(".page");
+    const cover = document.getElementById("cover");
+    const counter = document.getElementById("counter");
+
+    let currentPage = 0;
+
+    /*
+        IMPORTANTE:
+        Todas las hojas están superpuestas.
+        La hoja 1 debe quedar arriba al abrir el álbum,
+        no la última hoja.
+    */
+    function updatePageOrder() {
+
+        pages.forEach((page, index) => {
+
+            /*
+                La página actual y las siguientes quedan
+                por encima de las que ya fueron volteadas.
+            */
+            page.style.zIndex =
+                index < currentPage
+                    ? index + 1
+                    : pages.length * 2 - index;
+
+        });
+
+        /*
+            Cuando estamos justo al inicio, la primera hoja
+            debe ser la que esté más arriba.
+        */
+        if (currentPage === 0) {
+            pages.forEach((page, index) => {
+                page.style.zIndex = pages.length - index;
+            });
+        }
+    }
+
+    /*
+        Cada elemento .page contiene dos lados.
+        Al pasar una hoja, cambia el orden de las hojas
+        para que la siguiente sea la visible.
+    */
+
+    function openAlbum() {
+
+        cover.classList.add("open");
+
+        currentPage = 0;
+
+        updatePageOrder();
+        updateCounter();
+    }
+
+
+    function nextPage() {
+
+        // Abrir portada primero
+        if (!cover.classList.contains("open")) {
+
+            openAlbum();
+
+            return;
+        }
+
+        if (currentPage < pages.length) {
+
+            pages[currentPage].classList.add("flipped");
+
+            currentPage++;
+
+            updatePageOrder();
+            updateCounter();
+        }
+    }
+
+
+    function previousPage() {
+
+        // Si estamos en la primera página, volver a portada
+        if (currentPage === 0) {
+
+            cover.classList.remove("open");
+
+            updateCounter();
+
+            return;
+        }
+
+        currentPage--;
+
+        pages[currentPage].classList.remove("flipped");
+
+        updatePageOrder();
+        updateCounter();
+    }
+
+
+    function updateCounter() {
+
+        if (!cover.classList.contains("open")) {
+
+            counter.textContent = "Portada";
+
+        } else {
+
+            counter.textContent =
+                `Página ${currentPage + 1} de ${pages.length * 2}`;
+
+        }
+    }
+
+
+    // ======================================
+    // TECLADO
+    // ======================================
+
+    document.addEventListener("keydown", function(event) {
+
+        if (event.key === "ArrowRight") {
+            nextPage();
+        }
+
+        if (event.key === "ArrowLeft") {
+            previousPage();
+        }
+
+    });
+
+
+
+    // ======================================
+    // CORAZONES FLOTANTES
+    // ======================================
+
+    function createHeart() {
+
+        const heart = document.createElement("div");
+
+        heart.className = "heart";
+
+        heart.innerHTML =
+            Math.random() > .5
+                ? "♡"
+                : "♥";
+
+        heart.style.left =
+            Math.random() * 100 + "vw";
+
+        heart.style.fontSize =
+            (12 + Math.random() * 18) + "px";
+
+        heart.style.animationDuration =
+            (5 + Math.random() * 4) + "s";
+
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 9000);
+    }
+
+    function hearts() {
+
+        for (let i = 0; i < 12; i++) {
+
+            setTimeout(
+                createHeart,
+                i * 180
+            );
+
+        }
+    }
+
+    /*
+        Corazones constantes de fondo.
+        No bloquean los botones ni las páginas.
+    */
+    hearts();
+
+    setInterval(() => {
+        createHeart();
+    }, 1800);
+
+    // ======================================
+    // SWIPE EN CELULAR
+    // ======================================
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener("touchstart", function(event) {
+
+        touchStartX = event.changedTouches[0].screenX;
+
+    });
+
+
+    document.addEventListener("touchend", function(event) {
+
+        touchEndX = event.changedTouches[0].screenX;
+
+        handleSwipe();
+
+    });
+
+
+    function handleSwipe() {
+
+        const difference = touchStartX - touchEndX;
+
+        if (Math.abs(difference) < 50) {
+            return;
+        }
+
+        if (difference > 0) {
+            nextPage();
+        } else {
+            previousPage();
+        }
+
+    }
+
+    updatePageOrder();
+    updateCounter();
+
+</script>
+
+</body>
+</html>
